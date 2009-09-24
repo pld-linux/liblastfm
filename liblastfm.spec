@@ -1,7 +1,7 @@
 Summary:	Library to access Last.fm features
 Name:		liblastfm
 Version:	0.3.0
-Release:	0.1
+Release:	1
 License:	GPL v3
 Group:		Libraries
 Source0:	http://cdn.last.fm/src/%{name}-%{version}.tar.bz2
@@ -13,6 +13,7 @@ BuildRequires:	QtNetwork-devel
 BuildRequires:	QtSql-devel
 BuildRequires:	QtTest-devel
 BuildRequires:	QtXml-devel
+BuildRequires:	fftw3-single-devel
 BuildRequires:	qt4-qmake
 BuildRequires:	ruby
 BuildRequires:	ruby-modules
@@ -60,10 +61,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README
-%attr(755,root,root) %{_libdir}/%{name}.so.*.*.*
-%ghost %attr(755,root,root) %{_libdir}/%{name}.so.?
-%attr(755,root,root) %{_libdir}/%{name}_fingerprint.so.*.*.*
-%ghost %attr(755,root,root) %{_libdir}/%{name}_fingerprint.so.?
+%attr(755,root,root) %{_libdir}/%{name}.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/%{name}.so.?
+%attr(755,root,root) %{_libdir}/%{name}_fingerprint.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/%{name}_fingerprint.so.?
 
 %files devel
 %defattr(644,root,root,755)
