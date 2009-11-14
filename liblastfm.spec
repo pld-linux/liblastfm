@@ -14,9 +14,13 @@ BuildRequires:	QtSql-devel
 BuildRequires:	QtTest-devel
 BuildRequires:	QtXml-devel
 BuildRequires:	fftw3-single-devel
+BuildRequires:	libsamplerate-devel
+BuildRequires:	pkgconfig
+BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
 BuildRequires:	ruby
 BuildRequires:	ruby-modules
+BuildRequires:	which
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
