@@ -1,13 +1,13 @@
 Summary:	Library to access Last.fm features
 Name:		liblastfm
-Version:	0.3.0
+Version:	0.3.3
 Release:	1
 License:	GPL v3
 Group:		Libraries
-Source0:	http://cdn.last.fm/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	3f73222ebc31635941832b01e7a494b6
-Patch0:		%{name}-path.patch
-URL:		http://last.fm
+Source0:	http://github.com/mxcl/%{name}/tarball/%{version}#/%{name}-%{version}.tar.gz
+# Source0-md5:	fe339bf46aefc515c251200d10262f79
+Patch0:		%{name}-ruby19.patch
+URL:		http://github.com/mxcl/liblastfm/
 BuildRequires:	QtGui-devel
 BuildRequires:	QtNetwork-devel
 BuildRequires:	QtSql-devel
@@ -41,8 +41,10 @@ Header files for %{name}.
 Pliki nagłówkowe %{name}.
 
 %prep
-%setup -q
-%patch0 -p1
+%setup -q -n mxcl-liblastfm-1c739eb
+%patch0 -p0
+
+find . -name *.pro -exec sed -i -e "/target.path/s/lib/%{_lib}/g" {} \;
 
 %build
 %configure \
