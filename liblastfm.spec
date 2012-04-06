@@ -4,7 +4,7 @@ Version:	0.3.3
 Release:	1
 License:	GPL v3
 Group:		Libraries
-Source0:	http://github.com/mxcl/%{name}/tarball/%{version}#/%{name}-%{version}.tar.gz
+Source0:	http://github.com/mxcl/liblastfm/tarball/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	fe339bf46aefc515c251200d10262f79
 Patch0:		%{name}-ruby19.patch
 URL:		http://github.com/mxcl/liblastfm/
@@ -20,6 +20,7 @@ BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
 BuildRequires:	ruby
 BuildRequires:	ruby-modules
+BuildRequires:	sed >= 4.0
 BuildRequires:	which
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -41,16 +42,18 @@ Header files for %{name}.
 Pliki nagłówkowe %{name}.
 
 %prep
-%setup -q -n mxcl-liblastfm-1c739eb
+%setup -q -n mxcl-%{name}-1c739eb
 %patch0 -p0
 
-find . -name *.pro -exec sed -i -e "/target.path/s/lib/%{_lib}/g" {} \;
+find -name *.pro | xargs %{__sed} -i -e "/target.path/ s/lib/%{_lib}/g"
 
 %build
 %configure \
 	--prefix %{_prefix} \
 	--libdir %{_libdir}
-%{__make}
+%{__make} \
+	CXX="%{__cc}" \
+	CXXFLAGS="%{rpmcxxflags} -fno-operator-names -fPIC"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -68,9 +71,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README
 %attr(755,root,root) %{_libdir}/%{name}.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/%{name}.so.?
+%attr(755,root,root) %ghost %{_libdir}/%{name}.so.0
 %attr(755,root,root) %{_libdir}/%{name}_fingerprint.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/%{name}_fingerprint.so.?
+%attr(755,root,root) %ghost %{_libdir}/%{name}_fingerprint.so.0
 
 %files devel
 %defattr(644,root,root,755)
