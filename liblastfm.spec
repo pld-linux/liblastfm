@@ -1,7 +1,7 @@
 Summary:	Library to access Last.fm features
 Name:		liblastfm
 Version:	0.3.3
-Release:	1
+Release:	2
 License:	GPL v3
 Group:		Libraries
 Source0:	http://github.com/mxcl/liblastfm/tarball/%{version}/%{name}-%{version}.tar.gz
