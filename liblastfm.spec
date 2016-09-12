@@ -17,31 +17,35 @@ Source0:	https://github.com/lastfm/liblastfm/archive/%{version}/%{name}-%{versio
 URL:		https://github.com/lastfm/liblastfm
 BuildRequires:	cmake >= 2.8.6
 BuildRequires:	libstdc++-devel
-BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 %if %{with fingerprint}
 BuildRequires:	fftw3-single-devel
 BuildRequires:	libsamplerate-devel
+BuildRequires:	pkgconfig
 %endif
 %if %{with qt4}
 BuildRequires:	QtDBus-devel
 BuildRequires:	QtGui-devel
 BuildRequires:	QtNetwork-devel
-BuildRequires:	QtSql-devel
 BuildRequires:	QtTest-devel
 BuildRequires:	QtXml-devel
 BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
+%if %{with fingerprint}
+BuildRequires:	QtSql-devel
+%endif
 %endif
 %if %{with qt5}
 BuildRequires:	Qt5DBus-devel
 BuildRequires:	Qt5Gui-devel
 BuildRequires:	Qt5Network-devel
-BuildRequires:	Qt5Sql-devel
 BuildRequires:	Qt5Test-devel
 BuildRequires:	Qt5Xml-devel
 BuildRequires:	qt5-build
 BuildRequires:	qt5-qmake
+%if %{with fingerprint}
+BuildRequires:	Qt5Sql-devel
+%endif
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
