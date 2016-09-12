@@ -4,6 +4,7 @@
 # Conditional build:
 %bcond_without	qt4		# Qt4
 %bcond_without	qt5		# Qt5
+%bcond_without	fingerprint		# build/include liblastfm_fingerprint
 
 Summary:	Library to access Last.fm features
 Name:		liblastfm
@@ -15,11 +16,13 @@ Source0:	https://github.com/lastfm/liblastfm/archive/%{version}/%{name}-%{versio
 # Source0-md5:	8748f423f66f2fbc38c39f9153d01a71
 URL:		https://github.com/lastfm/liblastfm
 BuildRequires:	cmake >= 2.8.6
-BuildRequires:	fftw3-single-devel
-BuildRequires:	libsamplerate-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
+%if %{with fingerprint}
+BuildRequires:	fftw3-single-devel
+BuildRequires:	libsamplerate-devel
+%endif
 %if %{with qt4}
 BuildRequires:	QtDBus-devel
 BuildRequires:	QtGui-devel
@@ -86,7 +89,7 @@ install -d build-qt4
 cd build-qt4
 %cmake \
 	-DBUILD_WITH_QT4:BOOL=ON \
-	-DBUILD_FINGERPRINT:BOOL=ON \
+	-DBUILD_FINGERPRINT:BOOL=%{?with_fingerprint:ON}%{!?with_fingerprint:OFF} \
 	..
 %{__make}
 cd ..
@@ -97,7 +100,7 @@ install -d build-qt5
 cd build-qt5
 %cmake \
 	-DBUILD_WITH_QT4:BOOL=OFF \
-	-DBUILD_FINGERPRINT:BOOL=ON \
+	-DBUILD_FINGERPRINT:BOOL=%{?with_fingerprint:ON}%{!?with_fingerprint:OFF} \
 	..
 %{__make}
 cd ..
@@ -127,13 +130,17 @@ rm -rf $RPM_BUILD_ROOT
 %doc README.md
 %attr(755,root,root) %{_libdir}/liblastfm.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/liblastfm.so.1
+%if %{with fingerprint}
 %attr(755,root,root) %{_libdir}/liblastfm_fingerprint.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/liblastfm_fingerprint.so.1
+%endif
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}.so
+%if %{with fingerprint}
 %attr(755,root,root) %{_libdir}/%{name}_fingerprint.so
+%endif
 %{_includedir}/lastfm
 %endif
 
@@ -143,12 +150,16 @@ rm -rf $RPM_BUILD_ROOT
 %doc README.md
 %attr(755,root,root) %{_libdir}/liblastfm5.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/liblastfm5.so.1
+%if %{with fingerprint}
 %attr(755,root,root) %{_libdir}/liblastfm_fingerprint5.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/liblastfm_fingerprint5.so.1
+%endif
 
 %files qt5-devel
 %defattr(644,root,root,755)
 %{_libdir}/liblastfm5.so
+%if %{with fingerprint}
 %{_libdir}/liblastfm_fingerprint5.so
+%endif
 %{_includedir}/lastfm
 %endif
