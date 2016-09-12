@@ -1,18 +1,19 @@
 Summary:	Library to access Last.fm features
 Name:		liblastfm
-Version:	0.3.3
-Release:	2
+Version:	1.0.9
+Release:	1
 License:	GPL v3
 Group:		Libraries
-Source0:	http://github.com/mxcl/liblastfm/tarball/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	fe339bf46aefc515c251200d10262f79
+Source0:	https://github.com/lastfm/liblastfm/archive/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	8748f423f66f2fbc38c39f9153d01a71
 Patch0:		%{name}-ruby19.patch
-URL:		http://github.com/mxcl/liblastfm/
+URL:		https://github.com/lastfm/liblastfm
 BuildRequires:	QtGui-devel
 BuildRequires:	QtNetwork-devel
 BuildRequires:	QtSql-devel
 BuildRequires:	QtTest-devel
 BuildRequires:	QtXml-devel
+BuildRequires:	cmake >= 2.8.6
 BuildRequires:	fftw3-single-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	pkgconfig
@@ -42,23 +43,20 @@ Header files for %{name}.
 Pliki nagłówkowe %{name}.
 
 %prep
-%setup -q -n mxcl-%{name}-1c739eb
-%patch0 -p0
-
-find -name *.pro | xargs %{__sed} -i -e "/target.path/ s/lib/%{_lib}/g"
+%setup -q
+#%patch0 -p0
 
 %build
-%configure \
-	--prefix %{_prefix} \
-	--libdir %{_libdir}
-%{__make} \
-	CXX="%{__cc}" \
-	CXXFLAGS="%{rpmcxxflags} -fno-operator-names -fPIC"
+install -d build
+cd build
+%cmake \
+	-DBUILD_WITH_QT4:BOOL=ON \
+	-DBUILD_FINGERPRINT:BOOL=ON \
+	..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-%{__make} install \
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
@@ -69,15 +67,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README
+%doc README.md
 %attr(755,root,root) %{_libdir}/%{name}.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/%{name}.so.0
+%attr(755,root,root) %ghost %{_libdir}/%{name}.so.1
 %attr(755,root,root) %{_libdir}/%{name}_fingerprint.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/%{name}_fingerprint.so.0
+%attr(755,root,root) %ghost %{_libdir}/%{name}_fingerprint.so.1
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}.so
 %attr(755,root,root) %{_libdir}/%{name}_fingerprint.so
 %{_includedir}/lastfm
-%{_includedir}/lastfm.h
