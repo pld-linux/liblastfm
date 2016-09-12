@@ -17,12 +17,11 @@ URL:		https://github.com/lastfm/liblastfm
 BuildRequires:	cmake >= 2.8.6
 BuildRequires:	fftw3-single-devel
 BuildRequires:	libsamplerate-devel
+BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
-BuildRequires:	ruby
-BuildRequires:	ruby-modules
 BuildRequires:	sed >= 4.0
-BuildRequires:	which
 %if %{with qt4}
+BuildRequires:	QtDBus-devel
 BuildRequires:	QtGui-devel
 BuildRequires:	QtNetwork-devel
 BuildRequires:	QtSql-devel
@@ -32,6 +31,7 @@ BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
 %endif
 %if %{with qt5}
+BuildRequires:	Qt5DBus-devel
 BuildRequires:	Qt5Gui-devel
 BuildRequires:	Qt5Network-devel
 BuildRequires:	Qt5Sql-devel
